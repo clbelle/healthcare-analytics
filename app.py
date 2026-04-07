@@ -3,13 +3,17 @@ import joblib
 import pandas as pd
 from scipy.sparse import csr_matrix, hstack
 
+import os
+
 app = Flask(__name__)
 
-# Load model artifacts
+# Load model artifacts using absolute paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 print("Loading model artifacts...")
-xgb_model = joblib.load('xgb_triage_model.joblib')
-tfidf_vectorizer = joblib.load('tfidf_vectorizer.joblib')
-metadata = joblib.load('model_metadata.joblib')
+xgb_model = joblib.load(os.path.join(BASE_DIR, 'xgb_triage_model.joblib'))
+tfidf_vectorizer = joblib.load(os.path.join(BASE_DIR, 'tfidf_vectorizer.joblib'))
+metadata = joblib.load(os.path.join(BASE_DIR, 'model_metadata.joblib'))
 structured_feature_names = metadata['structured_feature_names']
 medians = metadata['medians']
 print("Artifacts loaded successfully.")
