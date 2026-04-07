@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adverse Outcome Triage Prediction</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="background-blobs">
+        <div class="blob shape1"></div>
+        <div class="blob shape2"></div>
+        <div class="blob shape3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Adverse Drug Reaction Outcome Predictor</h1>
+            <p>Predicting the likelihood of a serious adverse drug outcome based on patient demographics and clinical
+                reactions.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Input Form Card -->
+            <div class="glass-card form-container">
+                <h2>Patient Profile</h2>
+
+                <form id="triageForm">
+                    <div class="input-group row-group">
+                        <div class="input-field">
+                            <label for="age">Age (Years)</label>
+                            <input type="number" id="age" name="age" step="0.1" required placeholder="e.g. 55">
+                        </div>
+                        <div class="input-field">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" id="weight" name="weight" step="0.1" required placeholder="e.g. 70">
+                        </div>
+                    </div>
+
+                    <div class="input-group row-group">
+                        <div class="input-field">
+                            <label for="sex">Sex</label>
+                            <select id="sex" name="sex" required>
+                                <option value="" disabled selected>Select Sex</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Not Specified">Not Specified</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <label for="priority">Case Priority</label>
+                            <select id="priority" name="priority" required>
+                                <option value="" disabled selected>Select Priority</option>
+                                <option value="Expedited">Expedited</option>
+                                <option value="NonExpedited">Non-Expedited</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reactions">Reported Reactions</label>
+                        <textarea id="reactions" name="reactions" rows="4"
+                            placeholder="Describe the adverse reactions experienced by the patient (e.g., severe rash, headache, fever)..."
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="predictBtn">
+                        <span class="btn-text">Generate Prediction</span>
+                        <div class="spinner" id="spinner"></div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Result Card -->
+            <div class="glass-card result-container" id="resultContainer" style="display: none;">
+                <h2>Risk Assessment</h2>
+
+                <div class="risk-display">
+                    <div class="circular-progress" id="circularProgress">
+                        <div class="inner-circle" id="riskValue">0%</div>
+                    </div>
+                </div>
+
+                <div class="risk-details">
+                    <h3 id="riskLevel">Loading...</h3>
+                    <p id="riskDescription">Processing patient clinical profile...</p>
+                </div>
+
+                <button class="reset-btn" onclick="resetForm()">Assess New Patient</button>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

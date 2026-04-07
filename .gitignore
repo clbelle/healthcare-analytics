@@ -1,0 +1,25 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Data files (not needed for deployment)
+*.xlsx
+*.csv
+all02072026.xlsx
+all02072026_belle02152026.xlsx
+
+# Model artifacts (these SHOULD be in git, so we don't ignore them)
+# xgb_triage_model.joblib
+# tfidf_vectorizer.joblib
+# model_metadata.joblib
+
+# OS files
+.DS_Store
+Thumbs.db
