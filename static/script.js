@@ -23,6 +23,7 @@ document.getElementById('triageForm').addEventListener('submit', async function(
     };
 
     try {
+        console.log("Sending prediction request...");
         const response = await fetch('/predict', {
             method: 'POST',
             headers: {
@@ -31,18 +32,23 @@ document.getElementById('triageForm').addEventListener('submit', async function(
             body: JSON.stringify(formData)
         });
 
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: 'Server error' }));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
+        console.log("Prediction received:", data);
 
         if (data.status === 'success') {
             displayResults(data.risk_percentage);
         } else {
-            alert('Error: ' + data.message);
-            resetBtnState();
+            throw new Error(data.message || 'Unknown error occurred');
         }
 
     } catch (error) {
         console.error('Prediction failed:', error);
-        alert('Network error. Unable to connect to the prediction agent.');
+        alert('Prediction Error: ' + error.message);
         resetBtnState();
     }
 });
@@ -59,8 +65,8 @@ function resetBtnState() {
 }
 
 function displayResults(percentage) {
-    // Hide form, show results
-    document.querySelector('.form-container').style.display = 'none';
+    // DO NOT hide form anymore - user wants both visible
+    // document.querySelector('.form-container').style.display = 'none'; 
     
     const resultContainer = document.getElementById('resultContainer');
     resultContainer.style.display = 'flex';
@@ -68,10 +74,13 @@ function displayResults(percentage) {
     // Tiny delay to allow display flex to apply before adding opacity class for animation
     setTimeout(() => {
         resultContainer.classList.add('show');
+        // Smooth scroll to results
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
 
     animateProgress(percentage);
     setRiskText(percentage);
+    resetBtnState(); // Re-enable button so they can tweak inputs
 }
 
 function animateProgress(targetPercentage) {
@@ -129,9 +138,12 @@ function resetForm() {
     const resultContainer = document.getElementById('resultContainer');
     resultContainer.classList.remove('show');
     
+    // Smooth scroll back to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     setTimeout(() => {
         resultContainer.style.display = 'none';
-        document.querySelector('.form-container').style.display = 'block';
+        // document.querySelector('.form-container').style.display = 'block'; // Always visible now
         document.getElementById('triageForm').reset();
         resetBtnState();
         
@@ -139,6 +151,7 @@ function resetForm() {
         const circularProgress = document.getElementById('circularProgress');
         circularProgress.style.background = `conic-gradient(var(--bg-dark) 0deg, var(--card-bg) 0deg)`;
         document.getElementById('riskValue').style.color = '#fff';
+        document.getElementById('riskValue').textContent = '0%';
         
     }, 400); // match CSS transition time
 }

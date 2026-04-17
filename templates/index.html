@@ -79,8 +79,9 @@
                 </form>
             </div>
 
-            <!-- Result Card -->
-            <div class="glass-card result-container" id="resultContainer" style="display: none;">
+            <!-- Result Card (Initial state hidden by CSS opacity/transformed) -->
+            <div class="glass-card result-container" id="resultContainer">
+                <div id="resultAnchor"></div>
                 <h2>Risk Assessment</h2>
 
                 <div class="risk-display">
@@ -90,11 +91,11 @@
                 </div>
 
                 <div class="risk-details">
-                    <h3 id="riskLevel">Loading...</h3>
-                    <p id="riskDescription">Processing patient clinical profile...</p>
+                    <h3 id="riskLevel">Awaiting Input</h3>
+                    <p id="riskDescription">Enter patient details above and click "Generate Prediction".</p>
                 </div>
 
-                <button class="reset-btn" onclick="resetForm()">Assess New Patient</button>
+                <button class="reset-btn" onclick="resetForm()">Clear Results</button>
             </div>
 
         </main>

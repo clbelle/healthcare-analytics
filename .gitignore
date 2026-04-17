@@ -20,6 +20,11 @@ all02072026_belle02152026.xlsx
 # tfidf_vectorizer.joblib
 # model_metadata.joblib
 
+# Logs and Agent data
+app.log
+.agents/
+.gemini/
+
 # OS files
 .DS_Store
 Thumbs.db
